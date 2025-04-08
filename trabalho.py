@@ -1,40 +1,43 @@
 import time
 import os
+def limpar():
+    if os.name == 'nt':
+        os.system('cls')
 while True:
-    entrada = input("Digite a quantidade de dias que você ficou com o carro: ")
+    entrada = input("\n📅 Digite a quantidade de dias que você ficou com o carro: ")
     try:
         tempo = int(entrada)
         break
     except ValueError:
-        print("Erro: você deve digitar apenas números\n")
+        print("❌Erro: você deve digitar apenas números\n")
 
 while True:
-    valortemp = input(f"Digite o valor pago para alugar o carro por {tempo} dias: ")
+    valortemp = input(f"\n💸 Digite o valor pago para alugar o carro por {tempo} dias: ")
     try:
         valor = int(valortemp)
         break
     except ValueError:
-        print("Erro: você deve digitar apenas números\n")
+        print("❌Erro: você deve digitar apenas números\n")
 
 while True:
-    kilometrostemp = input("Digite a quantidade de kms que você rodou com o carro: ")
+    kilometrostemp = input("\n🚗💨 Digite a quantidade de kms que você rodou com o carro: ")
     try:
         kilometros = int(kilometrostemp)
         break
     except ValueError:
-        print("Erro: você deve digitar apenas números\n")
+        print("❌Erro: você deve digitar apenas números\n")
 #funcão que cria o relatório dos usuários ⬇️
 relatorios = {}
 
 def criar_relatorio():
     global relatorios
 
-    nome = input("Digite seu nome: ")
-    carro = input("Modelo do carro alugado: ")
+    nome = input("\n🧑 Digite seu nome: ")
+    carro = input("\n🚗 Modelo do carro alugado: ")
 
     
     while True:
-        dias = input("Por quantos dias alugou o carro? ")
+        dias = input("\n📅 Por quantos dias alugou o carro? ")
         if dias.isdigit():
             dias = int(dias)
             break
@@ -43,7 +46,7 @@ def criar_relatorio():
 
     
     while True:
-        valor_pago = input("Valor total pago: ")
+        valor_pago = input("\n💸 Valor total pago: ")
         try:
             valor_pago = float(valor_pago)
             break
@@ -51,14 +54,14 @@ def criar_relatorio():
             print("⚠️ Por favor, digite um número válido para o valor.")
 
     while True:
-        kms = input("Quantos kilometros foi rodado? ")
+        kms = input("\n🚗💨 Quantos kilometros foi rodado? ")
         try:
             km = float(kms)
             break
         except ValueError:
             print("⚠️ Por favor, digite um número para kilometros.")
 
-    avaliacao = input("Escreva sua avaliação sobre o carro: ")
+    avaliacao = input("\n✍️ Escreva sua avaliação sobre o carro🚗: ")
 
     relatorios[nome] = {
         "Carro": carro,
@@ -79,20 +82,24 @@ def criar_relatorio():
         arquivo.write(f"Avaliação: {avaliacao}\n")
 
     print(f"📁 Relatório salvo como '{nome_arquivo}'")
-
+    print("\n📁Salvando relatório aguarde...⏳")
     time.sleep(3)
 
     visualizar = input("Você deseja visualizar seu relatório? (SIM ou NÃO): ").strip().upper()
     if visualizar == "SIM":
+        print("\nAbrindo relatório⏳")
+        time.sleep(2)
         os.system(f"start {nome_arquivo}")
 while True:
-    relatoriotemp = input("Você gostaria de fazer um relatório sobre o carro utilizado? Responda com SIM ou NÃO: ").upper()
+    relatoriotemp = input("\nVocê gostaria de fazer um relatório sobre o carro utilizado? Responda com SIM ou NÃO: ").strip().upper()
 
     if relatoriotemp == "SIM":
         criar_relatorio()
         break
     elif relatoriotemp == "NAO" or relatoriotemp == "NÃO":
-        print("Obrigado por utilizar nossa empresa 😊")
         break
     else:
         print("Resposta inválida. Digite apenas SIM ou NÃO.\n")
+        
+limpar()
+print("\nObrigado por utilizar nossa empresa 😊")

@@ -1,0 +1,5 @@
+Relatório de Arthur
+Carro alugado: Opala
+Dias alugados: 15
+Valor pago: R$ 1000.0
+Avaliação: top
