@@ -3,6 +3,8 @@ import os
 def limpar():
     if os.name == 'nt':
         os.system('cls')
+#Introdução
+print("💰 Bem vindo ao sistema de pagamento e relátorios")
 while True:
     entrada = input("\n📅 Digite a quantidade de dias que você ficou com o carro: ")
     try:
@@ -100,6 +102,6 @@ while True:
         break
     else:
         print("Resposta inválida. Digite apenas SIM ou NÃO.\n")
-        
+
 limpar()
 print("\nObrigado por utilizar nossa empresa 😊")
