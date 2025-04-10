@@ -33,8 +33,76 @@ def registrar_pagamento():
 
     print("\n✅ Pagamento registrado com sucesso!")
     input("Pressione Enter para voltar ao menu...")
-#menuzinho
+#devedor
+def checar_debitos():
+    while True:
+        print("\n🔍 Checagem de Débitos")
 
+        while True:
+            valor_temp = input("\n💵 Qual é o valor semanal do aluguel? ")
+            try:
+                valor = float(valor_temp)
+                break
+            except ValueError:
+                print("❌ Digite um número válido.")
+
+        while True:
+            total_temp = input("📅 Quantas semanas você ficou com o carro? ")
+            try:
+                total = int(total_temp)
+                break
+            except ValueError:
+                print("❌ Erro: digite apenas números.")
+
+        while True:
+            pagas_temp = input("✅ Quantas semanas foram pagas normalmente? ")
+            try:
+                pagas = int(pagas_temp)
+                if pagas > total:
+                    print("❌ Erro: você não pode ter pago mais semanas do que ficou com o carro.")
+                else:
+                    break
+            except ValueError:
+                print("❌ Erro: digite apenas números.")
+
+        while True:
+            print(f"\nConfirma que você ficou {total} semanas com o carro e pagou {pagas} semanas?")
+            confirmacao = input("Digite SIM para continuar ou NÃO para reiniciar: ").strip().upper()
+
+            if confirmacao == "SIM":
+                break
+            elif confirmacao == "NAO" or confirmacao == "NÃO":
+                print("\n🔁 Recomeçando a checagem de débitos...")
+                time.sleep(2)
+                limpar()
+                return checar_debitos()
+            else:
+                print("⚠️ Resposta inválida. Digite apenas SIM ou NÃO.")
+                time.sleep(2)
+
+        atraso = total - pagas
+        valor_pago = valor * pagas
+        valor_atraso = valor * atraso
+
+        print("\n📌 RESUMO:")
+        print(f"📅 Total de semanas com o carro: {total}")
+        print(f"✅ Semanas pagas: {pagas}")
+        print(f"❌ Semanas em atraso: {atraso}")
+        print(f"💵 Valor semanal: R$ {valor:.2f}")
+
+        if atraso > 0:
+            multa_percentual = 10 + (atraso - 1) * 5
+            multa_valor = valor_atraso * (multa_percentual / 100)
+            total_com_multa = valor_atraso + multa_valor
+
+            print(f"\n⚠️ Multa aplicada: {multa_percentual}%")
+            print(f"💣 Valor devido (atraso): R$ {valor_atraso:.2f}")
+            print(f"➕ Multa sobre atraso: R$ {multa_valor:.2f}")
+            print(f"💰 Total a pagar (somente atraso): R$ {total_com_multa:.2f}")
+        else:
+            print(f"\n✅ Nenhum débito! Total pago: R$ {valor_pago:.2f}")
+        input("\nPressione Enter para voltar ao menu...")
+        break        
 #funcão que cria o relatório dos usuários ⬇️
 relatorios = {}
 
@@ -70,7 +138,7 @@ def criar_relatorio():
 
     relatorios[nome] = {
         "Carro": carro,
-        "Dias": semanas,
+        "Semanas": semanas,
         "Valor Pago": valor_pago,
         "Kilometragem": km,
         "Avaliação": avaliacao
@@ -82,28 +150,36 @@ def criar_relatorio():
     with open(nome_arquivo, "w", encoding="utf-8") as arquivo:
         arquivo.write(f"Relatório de {nome}\n")
         arquivo.write(f"Carro alugado: {carro}\n")
-        arquivo.write(f"Dias alugados: {semanas}\n")
+        arquivo.write(f"Semanas alugadas: {semanas}\n")
         arquivo.write(f"Valor pago: R$ {valor_pago}\n")
         arquivo.write(f"Avaliação: {avaliacao}\n")
 
     print(f"📁 Relatório salvo como '{nome_arquivo}'")
     print("\n📁Salvando relatório aguarde...⏳")
     time.sleep(3)
-
-    visualizar = input("Você deseja visualizar seu relatório? (SIM ou NÃO): ").strip().upper()
-    if visualizar == "SIM":
-        print("\nAbrindo relatório⏳")
-        time.sleep(2)
-        os.system(f"start {nome_arquivo}")
+    limpar()
+    while True:
+        visualizar = input("Você deseja visualizar seu relatório? (SIM ou NÃO): ").strip().upper()
+        if visualizar == "SIM":
+            print("\nAbrindo relatório⏳")
+            time.sleep(2)
+            os.system(f"start {nome_arquivo}")
+            break
+        elif visualizar == "NÃO" or visualizar == "NAO":
+            print("📝 Relatório criado, mas não será aberto agora.")
+            break
+        else:
+            print("⚠️ Resposta inválida. Digite apenas SIM ou NÃO.")
 def menu():
     while True:
         limpar()
         print("\n📋 MENU DO SISTEMA DE PAGAMENTO")
         print("1️⃣  Registrar pagamento")
         print("2️⃣  Criar novo relatório")
-        print("3️⃣  Sair do sistema")
+        print("3️⃣  Checar débitos")
+        print("4️⃣  Sair do sistema")
 
-        opcao = input("\nEscolha uma opção (1|2|3): ").strip()
+        opcao = input("\nEscolha uma opção (1|2|3|4): ").strip()
 
         if opcao == "1":
             registrar_pagamento()
@@ -111,6 +187,8 @@ def menu():
             criar_relatorio()
             input("\nPressione Enter para voltar ao menu...")
         elif opcao == "3":
+            checar_debitos()
+        elif opcao == "4":
             limpar()
             print("\nObrigado por utilizar nossa empresa 😊")
             break
